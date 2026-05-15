@@ -88,6 +88,9 @@ nav a:hover{
   text-decoration: none;
   border: 2px solid #c77dff;
   transition: 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .primary{
@@ -118,7 +121,6 @@ nav a:hover{
   top: 50%;
   left: 50%;
   border: 8px solid;
-  /* Removed border-radius: 50% to keep them as squares/shapes */
   animation: spin 12s linear infinite;
   transform-origin: center;
 }
@@ -133,7 +135,7 @@ nav a:hover{
   width: 22px;
   height: 22px;
   background: #c77dff;
-  border-radius: 50%; /* Only the core is a circle */
+  border-radius: 50%; 
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -171,14 +173,13 @@ footer{
 
   .hero-visual{
     order: 2;
-    width: 100vw; /* Using viewport width for phone screens */
+    width: 100vw; 
     height: 100vw;
     max-height: 400px;
     margin-top: 20px;
     opacity: 0.6;
   }
 
-  /* Scaling rings based on viewport width (vw) ensures they never exceed screen edges */
   .ring1{ width: 50vw; height: 50vw; border-width: 4px; }
   .ring2{ width: 65vw; height: 65vw; border-width: 4px; }
   .ring3{ width: 80vw; height: 80vw; border-width: 4px; }
