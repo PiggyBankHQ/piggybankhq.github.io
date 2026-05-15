@@ -129,7 +129,7 @@ nav a:hover{
 .ring2{ width: 400px; height: 400px; border-color: #00f5d4; animation-duration: 18s; }
 .ring3{ width: 460px; height: 460px; border-color: #f9c74f; animation-duration: 22s; }
 .ring4{ width: 540px; height: 540px; border-color: #666; animation-duration: 30s; }
-
+ 
 .core{
   position: absolute;
   width: 22px;
