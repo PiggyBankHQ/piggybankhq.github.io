@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback | Ring Rave</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <header class="hero">
+    <nav>
+      <div class="logo">
+        <a href="index.html">
+          <img src="assets/ringrave_final_logo.png" alt="Ring Rave" style="width: 200px;">
+        </a>
+      </div>
+    </nav>
+
+    <div class="hero-content">
+      <div class="hero-text feedback-container">
+        <h1>Send Feedback</h1>
+        <p>Encountered a bug or have a feature request? Let us know below!</p>
+
+        <form action="https://formspree.io/f/piggybankhq@gmail.com" method="POST" enctype="multipart/form-data" class="feedback-form">
+          <input type="hidden" name="_next" value="thanks.html">
+          
+          <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" value="RingRave feedback" readonly required>
+          </div>
+
+          <div class="form-group">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell us what you think..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="image-upload" class="file-label">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Attach an Image (Optional)
+            </label>
+            <input type="file" id="image-upload" name="attachment" accept="image/*">
+          </div>
+
+          <button type="submit" class="btn primary submit-btn">
+            <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+          </button>
+        </form>
+      </div>
+
+      <div id="visual-container" class="hero-visual">
+        <div class="ring ring1"></div>
+        <div class="ring ring2"></div>
+        <div class="ring ring3"></div>
+        <div class="ring ring4"></div>
+        <div class="core"></div>
+      </div>
+    </div>
+  </header>
+
+  <footer>
+    <div class="company-footer">
+      <img src="assets/piggybank_logo.png" style="opacity: 0.5;" width="80px" alt="Company Logo" class="tiny-logo">
+    </div>
+  </footer>
+</body>
+</html>
