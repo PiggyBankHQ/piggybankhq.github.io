@@ -25,9 +25,12 @@
         <h1>Send Feedback</h1>
         <p>Encountered a bug or have a feature request? Let us know below!</p>
 
-        <form action="https://formspree.io/f/piggybankhq@gmail.com" method="POST" enctype="multipart/form-data" class="feedback-form">
-          <input type="hidden" name="_next" value="thanks.html">
+        <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" class="feedback-form">
+
+          <input type="hidden" name="access_key" value="5aa4dc13-121e-4097-b9c3-dd8436fc8f61">
           
+          <input type="hidden" name="redirect" value="https://piggybank.github.io/thanks.html">
+
           <div class="form-group">
             <label for="name">Name</label>
             <input type="text" id="name" name="name" placeholder="Your Name" required>
