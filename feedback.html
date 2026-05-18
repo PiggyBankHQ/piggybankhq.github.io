@@ -27,36 +27,40 @@
 
         <form action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data" class="feedback-form">
 
-          <input type="hidden" name="access_key" value="5aa4dc13-121e-4097-b9c3-dd8436fc8f61">
-          
-          <input type="hidden" name="redirect" value="https://piggybank.github.io/thanks.html">
+  <input type="hidden" name="access_key" value="5aa4dc13-121e-4097-b9c3-dd8436fc8f61">
+  
+  <input type="hidden" name="redirect" value="https://piggybank.github.io/thanks.html">
+  
+  <input type="hidden" name="from_name" value="Ring Rave Feedback">
+  
+  <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
 
-          <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" name="name" placeholder="Your Name" required>
-          </div>
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Your Name" required>
+  </div>
 
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" name="subject" value="RingRave feedback" readonly required>
-          </div>
+  <div class="form-group">
+    <label for="subject">Subject</label>
+    <input type="text" id="subject" name="subject" value="RingRave feedback" readonly required>
+  </div>
 
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Tell us what you think..." required></textarea>
-          </div>
+  <div class="form-group">
+    <label for="message">Message</label>
+    <textarea id="message" name="message" rows="5" placeholder="Tell us what you think..." required></textarea>
+  </div>
 
-          <div class="form-group">
-            <label for="image-upload" class="file-label">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Attach an Image (Optional)
-            </label>
-            <input type="file" id="image-upload" name="attachment" accept="image/*">
-          </div>
+  <div class="form-group">
+    <label for="image-upload" class="file-label">
+      <i class="fa-solid fa-cloud-arrow-up"></i> Attach an Image (Optional)
+    </label>
+    <input type="file" id="image-upload" name="attachment" accept="image/*">
+  </div>
 
-          <button type="submit" class="btn primary submit-btn">
-            <i class="fa-solid fa-paper-plane"></i> Submit Feedback
-          </button>
-        </form>
+  <button type="submit" class="btn primary submit-btn">
+    <i class="fa-solid fa-paper-plane"></i> Submit Feedback
+  </button>
+</form>
       </div>
 
       <div id="visual-container" class="hero-visual">
