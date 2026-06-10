@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <title>Gameplay Highlights | Ring Rave Arcade</title>
   <meta name="description" content="Watch high-energy gameplay clips and strategy highlights from Ring Rave Arcade. Check out the neon action and idle zen modes.">
   
@@ -12,6 +13,130 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   
   <link rel="stylesheet" href="style.css">
+  <style>
+    .gameplay-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 8%;
+      width: 100%;
+      flex: 1;
+    }
+    .gameplay-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+    .gameplay-header h1 {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 15px;
+      letter-spacing: -1px;
+    }
+    .gameplay-header p {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    /* Infinite Dynamic Responsive Grid */
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      width: 100%;
+    }
+    /* Arcade Video Card Theme */
+    .video-card {
+      background: rgba(255, 255, 255, 0.01);
+      border: 1px solid rgba(199, 125, 255, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      position: relative;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    }
+    .video-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--neon-purple), var(--neon-cyan));
+      opacity: 0.7;
+      transition: opacity 0.3s ease;
+    }
+    .video-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 30px rgba(0, 245, 212, 0.25), 0 20px 50px rgba(0, 0, 0, 0.8);
+    }
+    .video-card:hover::before {
+      opacity: 1;
+    }
+    /* Responsive Portrait Fit Wrapper */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 9 / 16;
+      background: #000000;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    /* Video Details Panel */
+    .video-info {
+      padding: 24px;
+      background: linear-gradient(to bottom, transparent, rgba(3, 3, 7, 0.9));
+      border-top: 1px solid rgba(255, 255, 255, 0.03);
+    }
+    .video-meta-badge {
+      display: inline-block;
+      font-family: var(--font-heading);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--neon-cyan);
+      background: rgba(0, 245, 212, 0.08);
+      border: 1px solid rgba(0, 245, 212, 0.3);
+      padding: 4px 10px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    .video-card:nth-child(even) .video-meta-badge {
+      color: var(--neon-purple);
+      background: rgba(199, 125, 255, 0.08);
+      border: 1px solid rgba(199, 125, 255, 0.3);
+    }
+    .video-info h3 {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      font-weight: 700;
+    }
+    .video-info p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    @media (max-width: 768px) {
+      .gameplay-header h1 { font-size: 2.8rem; }
+      .video-grid { gap: 25px; }
+    }
+    @media (max-width: 480px) {
+      .gameplay-header h1 { font-size: 2.2rem; }
+      .video-grid { grid-template-columns: 1fr; }
+    }
+  </style>
   <script defer src="script.js"></script>
 </head>
 <body>
@@ -34,39 +159,61 @@
     <header class="gameplay-header">
       <span class="badge">Rave in Action</span>
       <h1>Gameplay <span class="neon-text">Showcase</span></h1>
-      <p>Catch the rhythm, study the layouts, and watch the ultimate shape-destroying chaos unfold.</p>
+      <p>Catch the rhythm, analyze the patterns, and watch the ultimate geometric chaos unfold.</p>
     </header>
 
     <section class="video-grid">
-      <div class="video-card">
-        <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/wg6pQrXQFMo" title="Ring Rave Gameplay Clip 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
-        <div class="video-info">
-          <h3>High Energy Run #1</h3>
-          <p>Absolute destruction in the arcade mode layers.</p>
-        </div>
-      </div>
+          
+          <div class="video-card">
+            <div class="video-wrapper">
+              <iframe src="https://www.youtube.com/embed/wg6pQrXQFMo?modestbranding=1&rel=0" title="Ring Rave Arcade Mode Run" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <span class="video-meta-badge"><i class="fa-solid fa-bolt"></i> Arcade Mode</span>
+              <h3>High Energy Run #5</h3>
+            </div>
+          </div>
 
-      <div class="video-card">
-        <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/wg6pQrXQFMo" title="Ring Rave Gameplay Clip 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
-        <div class="video-info">
-          <h3>Zen Mode Strategy</h3>
-          <p>Relaxing tap timings and seamless idle progression.</p>
-        </div>
-      </div>
+          <div class="video-card">
+            <div class="video-wrapper">
+              <iframe src="https://www.youtube.com/embed/l5jI66W4cpA?modestbranding=1&rel=0" title="Ring Rave Zen Gameplay" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <span class="video-meta-badge"><i class="fa-solid fa-moon"></i> Zen Mode</span>
+              <h3>High Energy Run #4</h3>
+            </div>
+          </div>
 
-      <div class="video-card">
-        <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/wg6pQrXQFMo" title="Ring Rave Gameplay Clip 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-        </div>
-        <div class="video-info">
-          <h3>Perfect Combo Multiplier</h3>
-          <p>Surviving the ultimate high-speed round parameters.</p>
-        </div>
-      </div>
+          <div class="video-card">
+            <div class="video-wrapper">
+              <iframe src="https://www.youtube.com/embed/hUMcmGvKGd8?modestbranding=1&rel=0" title="Ring Rave Advanced Strategy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <span class="video-meta-badge"><i class="fa-solid fa-trophy"></i> Pro Tips</span>
+              <h3>High Energy Run #3</h3>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="video-wrapper">
+              <iframe src="https://www.youtube.com/embed/x9ytwHvCMng?modestbranding=1&rel=0" title="Ring Rave Gameplay Highlight" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <span class="video-meta-badge"><i class="fa-solid fa-bolt"></i> Arcade Mode</span>
+              <h3>Let there be Light #2</h3>
+            </div>
+          </div>
+
+          <div class="video-card">
+            <div class="video-wrapper">
+              <iframe src="https://www.youtube.com/embed/FvGHiB2zYrI?modestbranding=1&rel=0" title="Ring Rave Gameplay Highlight" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+              <span class="video-meta-badge"><i class="fa-solid fa-bolt"></i> Arcade Mode</span>
+              <h3>The Power of Active Skills #1</h3>
+            </div>
+          </div>
+
     </section>
   </main>
 
