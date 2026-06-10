@@ -221,8 +221,8 @@ body {
 
 .ring-system {
   position: relative;
-  width: 90%;
-  height: 90%;
+  width: 100%;
+  height: 100%;
   max-width: 480px;
   max-height: 480px;
   display: flex;
@@ -230,45 +230,21 @@ body {
   align-items: center;
 }
 
-.ring {
+/* Dynamic Dynamic SVG shape element styling */
+.dynamic-ring {
   position: absolute;
-  border: 6px solid transparent;
-  border-radius: 50%;
-  animation: spin 15s linear infinite;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: center center;
+  pointer-events: none;
 }
 
-.ring1 {
-  width: 50%;
-  height: 50%;
-  border-color: var(--neon-purple);
-  box-shadow: 0 0 15px rgba(199, 125, 255, 0.2), inset 0 0 15px rgba(199, 125, 255, 0.2);
-  animation-duration: 8s;
-}
-
-.ring2 {
-  width: 70%;
-  height: 70%;
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 20px rgba(0, 245, 212, 0.2), inset 0 0 20px rgba(0, 245, 212, 0.2);
-  animation-duration: 14s;
-  animation-direction: reverse;
-}
-
-.ring3 {
-  width: 88%;
-  height: 88%;
-  border-color: var(--neon-yellow);
-  box-shadow: 0 0 25px rgba(249, 199, 79, 0.15), inset 0 0 25px rgba(249, 199, 79, 0.15);
-  animation-duration: 20s;
-}
-
-.ring4 {
-  width: 105%;
-  height: 105%;
-  border: 3px dashed rgba(255, 255, 255, 0.15);
-  animation-duration: 40s;
-  animation-direction: reverse;
-}
+.ring-layer1 { animation: spin 8s linear infinite; }
+.ring-layer2 { animation: spin 14s linear infinite reverse; }
+.ring-layer3 { animation: spin 20s linear infinite; }
+.ring-layer4 { animation: spin 40s linear infinite reverse; }
 
 .core {
   position: absolute;
