@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real or AI? | Face Detection Academy</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen font-sans antialiased relative">
+
+  <!-- EYE-CATCHING FLOATING BUY ME A COFFEE WIDGET -->
+  <div class="fixed bottom-6 right-6 z-50">
+    <a href="https://www.buymeacoffee.com" target="_blank" rel="noopener noreferrer" 
+       class="group flex items-center gap-3 bg-amber-400 hover:bg-amber-300 text-slate-900 px-4 py-3 rounded-full font-bold shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 border-2 border-amber-300/80">
+      <span class="w-9 h-9 rounded-full bg-white/90 flex items-center justify-center text-amber-700 text-xl shadow-inner group-hover:rotate-12 transition-transform">
+        <i class="fa-solid fa-mug-hot"></i>
+      </span>
+      <div class="flex flex-col text-left pr-1">
+        <span class="text-[10px] text-amber-950 font-black leading-none uppercase tracking-wider">Keep this free</span>
+        <span class="text-sm font-extrabold text-slate-900 leading-tight">Buy us a coffee ☕</span>
+      </div>
+    </a>
+  </div>
+
+  <!-- AUTH MODAL POPUP -->
+  <div id="auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden transition-opacity duration-200">
+    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-md overflow-hidden relative transform transition-all scale-100">
+      <!-- Close Button -->
+      <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 w-8 h-8 rounded-full flex items-center justify-center hover:bg-slate-100 transition-colors">
+        <i class="fa-solid fa-xmark text-lg"></i>
+      </button>
+
+      <div class="p-8 text-center space-y-6">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white text-xl shadow-md mx-auto">
+          <i class="fa-solid fa-user-shield"></i>
+        </div>
+
+        <div>
+          <h3 id="auth-modal-title" class="text-2xl font-extrabold text-slate-900">Welcome to VeriFace AI</h3>
+          <p id="auth-modal-subtitle" class="text-sm text-slate-500 mt-1">Sign in to track your scores, save achievements, and benchmark performance.</p>
+        </div>
+
+        <!-- Google OAuth Primary Button -->
+        <button onclick="triggerGoogleAuth()" class="w-full bg-white hover:bg-slate-50 text-slate-700 font-semibold py-3 px-4 rounded-xl border border-slate-300 shadow-sm transition-all flex items-center justify-center gap-3 group hover:border-slate-400">
+          <svg class="w-5 h-5" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continue with Google</span>
+        </button>
+
+        <div class="relative flex py-1 items-center">
+          <div class="flex-grow border-t border-slate-200"></div>
+          <span class="flex-shrink mx-3 text-xs text-slate-400 font-medium uppercase tracking-wider">Secure Access</span>
+          <div class="flex-grow border-t border-slate-200"></div>
+        </div>
+
+        <p class="text-xs text-slate-400 leading-relaxed">
+          By continuing, you agree to our Terms of Service and Privacy Policy. No data is shared without your permission.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP NAVIGATION MENU -->
+  <header class="bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('landing')">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-eye text-lg"></i>
+        </div>
+        <span class="font-bold text-xl tracking-tight text-slate-900">VeriFace<span class="text-indigo-600">AI</span></span>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center space-x-1">
+        <button onclick="navigateTo('landing')" id="nav-landing" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-indigo-600 bg-indigo-50">Home</button>
+        <button onclick="navigateTo('training')" id="nav-training" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-indigo-600 hover:bg-slate-100">Training Module</button>
+        <button onclick="navigateTo('quiz')" id="nav-quiz" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-indigo-600 hover:bg-slate-100">Swipe Quiz</button>
+        <button onclick="navigateTo('about')" id="nav-about" class="nav-btn px-4 py-2 rounded-lg text-sm font-medium transition-colors text-slate-600 hover:text-indigo-600 hover:bg-slate-100">About</button>
+      </nav>
+
+      <!-- Desktop Header Actions: Auth Buttons -->
+      <div class="hidden md:flex items-center space-x-3">
+        <a href="https://www.buymeacoffee.com" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 bg-amber-100 hover:bg-amber-200 text-amber-900 border border-amber-300 px-3.5 py-2 rounded-lg font-bold text-sm transition-all">
+          <i class="fa-solid fa-mug-hot text-amber-700"></i>
+          <span>Support Us</span>
+        </a>
+        <button onclick="openAuthModal('login')" class="text-slate-700 hover:text-indigo-600 hover:bg-slate-100 px-3.5 py-2 rounded-lg font-semibold text-sm transition-all">
+          Log In
+        </button>
+        <button onclick="openAuthModal('signup')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all shadow-sm hover:shadow">
+          Sign Up
+        </button>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMobileMenu()" class="md:hidden p-2 text-slate-600 hover:text-slate-900">
+        <i class="fa-solid fa-bars text-xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-slate-200 bg-white px-4 pt-2 pb-4 space-y-2">
+      <button onclick="navigateTo('landing')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Home</button>
+      <button onclick="navigateTo('training')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Training Module</button>
+      <button onclick="navigateTo('quiz')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">Swipe Quiz</button>
+      <button onclick="navigateTo('about')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-100">About</button>
+      <div class="pt-2 grid grid-cols-2 gap-2">
+        <button onclick="openAuthModal('login')" class="w-full text-center py-2 border border-slate-200 rounded-lg font-semibold text-sm text-slate-700">Log In</button>
+        <button onclick="openAuthModal('signup')" class="w-full text-center py-2 bg-indigo-600 text-white rounded-lg font-semibold text-sm">Sign Up</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+    <!-- PAGE 1: LANDING SUB-PAGE -->
+    <section id="page-landing" class="page-section space-y-16">
+      
+      <!-- Hero Section -->
+      <div class="text-center max-w-3xl mx-auto space-y-6 pt-4">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-800 tracking-wide uppercase">
+          Interactive Forensic Detection Course
+        </span>
+        <h1 class="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+          Can you spot the difference between <span class="text-indigo-600">Real</span> and <span class="text-indigo-600">AI Synthetic</span> faces?
+        </h1>
+        <p class="text-lg text-slate-600 leading-relaxed">
+          Generative AI portraits are becoming indistinguishable from real photography. Learn to spot subtle digital artifacts, practice with interactive drills, and benchmark your accuracy.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4 pt-2">
+          <button onclick="navigateTo('training')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg shadow-indigo-200 transition-all transform hover:-translate-y-0.5">
+            Start Training Drills <i class="fa-solid fa-arrow-right ml-2"></i>
+          </button>
+          <button onclick="navigateTo('quiz')" class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-6 py-3 rounded-xl font-semibold shadow-sm transition-all">
+            Take 20-Card Quiz Challenge
+          </button>
+        </div>
+      </div>
+
+      <!-- SPOTLIGHT COMPARISON SECTION -->
+      <div class="bg-white rounded-3xl border border-slate-200/80 shadow-xl p-6 sm:p-8 max-w-5xl mx-auto">
+        <div class="text-center max-w-xl mx-auto mb-8">
+          <h2 class="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-1">Spotlight Comparison</h2>
+          <h3 class="text-2xl font-extrabold text-slate-900">Real Human vs. AI Synthetic Generation</h3>
+          <p class="text-slate-500 text-sm mt-1">Can you identify the subtle visual artifacts in the AI subject below?</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-8 items-stretch">
+          
+          <!-- REAL FACE CARD (images/real/real_1.F.png) -->
+          <div class="group relative bg-slate-50 rounded-2xl border border-emerald-200/80 p-5 transition-all hover:shadow-md flex flex-col justify-between">
+            <div class="absolute top-8 right-8 z-10">
+              <span class="bg-emerald-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-circle-check"></i> AUTHENTIC REAL
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="relative overflow-hidden rounded-xl bg-white aspect-square flex items-center justify-center">
+                <img 
+                  src="images/real/real_1.F.png" 
+                  alt="Real Portrait Subject (real_1.F.png)" 
+                  onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1024\' height=\'1024\' viewBox=\'0 0 1024 1024\'><rect width=\'1024\' height=\'1024\' fill=\'%23d1fae5\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%23065f46\'>real_1.F.png</text></svg>'"
+                  class="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+                />
+              </div>
+
+              <div>
+                <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                  Natural Optical Physics
+                </h4>
+                <p class="text-xs text-slate-500 mt-1">Key indicators of genuine photography:</p>
+              </div>
+
+              <ul class="space-y-2 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                  <span><strong>Identical Catchlights:</strong> Twin light reflections match light sources naturally in both pupils.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                  <span><strong>Background Optics:</strong> Background blur exhibits consistent depth of field without distortion.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-check text-emerald-500 mt-0.5"></i>
+                  <span><strong>Micro-Details:</strong> Asymmetrical skin pores and natural, non-uniform hair strand distribution.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- AI GENERATED CARD (images/AI/ai_2.M.png) -->
+          <div class="group relative bg-slate-50 rounded-2xl border border-rose-200/80 p-5 transition-all hover:shadow-md flex flex-col justify-between">
+            <div class="absolute top-8 right-8 z-10">
+              <span class="bg-rose-600 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center gap-1.5">
+                <i class="fa-solid fa-robot"></i> AI SYNTHETIC
+              </span>
+            </div>
+
+            <div class="space-y-4">
+              <div class="relative overflow-hidden rounded-xl bg-white aspect-square flex items-center justify-center">
+                <img 
+                  src="images/AI/ai_2.M.png" 
+                  alt="AI Synthetic Subject (ai_2.M.png)" 
+                  onerror="this.onerror=null; this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'1024\' height=\'1024\' viewBox=\'0 0 1024 1024\'><rect width=\'1024\' height=\'1024\' fill=\'%23e0e7ff\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' fill=\'%234338ca\'>ai_2.M.png</text></svg>'"
+                  class="w-full h-full object-cover rounded-xl transition-transform duration-300 group-hover:scale-105"
+                />
+                <div class="absolute top-[35%] right-[25%] bg-rose-500/90 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-lg border border-white animate-pulse">
+                  1. Asymmetrical Pupil
+                </div>
+                <div class="absolute bottom-[30%] right-[15%] bg-rose-500/90 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-full shadow-lg border border-white animate-pulse">
+                  2. Earring Warping
+                </div>
+              </div>
+
+              <div>
+                <h4 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                  Generative Model Anomaly Breakdown
+                </h4>
+                <p class="text-xs text-slate-500 mt-1">Frequent flaws found in AI renders:</p>
+              </div>
+
+              <ul class="space-y-2 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-xmark text-rose-500 mt-0.5"></i>
+                  <span><strong>Mismatched Pupils & Reflection:</strong> Pupil shapes distort or carry non-matching catchlight reflections.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-xmark text-rose-500 mt-0.5"></i>
+                  <span><strong>Melting Accessories:</strong> Jewelry, eyeglasses frames, or collars blend directly into skin or hair.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <i class="fa-solid fa-xmark text-rose-500 mt-0.5"></i>
+                  <span><strong>Over-Smoothed Texture:</strong> Synthetic plastic skin effect missing microscopic pores or fine wrinkles.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 bg-slate-50/50 p-4 rounded-xl">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">
+              <i class="fa-solid fa-graduation-cap"></i>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-900">Ready to test your trained eye?</p>
+              <p class="text-xs text-slate-500">Jump into our guided drills to train your perception on real case studies.</p>
+            </div>
+          </div>
+          <button onclick="navigateTo('training')" class="w-full sm:w-auto bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-all">
+            Enter Training Arena
+          </button>
+        </div>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="grid md:grid-cols-3 gap-8 pt-4 max-w-5xl mx-auto">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-microscope"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Targeted Visual Training</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Learn forensic clues: asymmetrical eyes, distorted background geometry, irregular teeth, and artificial skin smoothing.
+          </p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-cards-blank"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Tinder-Style Swipe Engine</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Swipe left for AI, right for Real. Evaluate blocks of 20 portraits under realistic condition constraints.
+          </p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Comprehensive Feedback</h3>
+          <p class="text-slate-600 text-sm leading-relaxed">
+            Get instant contextual breakdowns during drills and an accuracy report card upon finishing quiz blocks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 2: TRAINING MODULE -->
+    <section id="page-training" class="page-section hidden max-w-4xl mx-auto space-y-8">
+      <div>
+        <h2 class="text-3xl font-bold text-slate-900">Interactive Training Module</h2>
+        <p class="text-slate-600 mt-1">Study the candidate image, make your assessment, and review immediate forensic feedback.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden grid md:grid-cols-2">
+        <div class="bg-slate-100 flex items-center justify-center p-2 border-b md:border-b-0 md:border-r border-slate-200 aspect-square">
+          <img id="training-img" src="" alt="Training Subject" class="w-full h-full object-cover rounded-xl shadow-sm">
+        </div>
+
+        <div class="p-6 flex flex-col justify-between space-y-6">
+          <div>
+            <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Exercise Case <span id="training-index">1</span></span>
+            <h3 class="text-xl font-bold text-slate-900 mt-1">Assess this portrait</h3>
+            <p class="text-slate-600 text-sm mt-2">Examine the eyes, jewelry, ears, and background transitions for anomalies.</p>
+          </div>
+
+          <div id="training-buttons" class="grid grid-cols-2 gap-4">
+            <button onclick="submitTrainingGuess(false)" class="py-3 px-4 rounded-xl border-2 border-slate-200 hover:border-indigo-600 hover:bg-indigo-50 font-bold text-slate-700 hover:text-indigo-600 transition-all flex flex-col items-center gap-1">
+              <i class="fa-solid fa-user-check text-lg"></i>
+              <span>Real Human</span>
+            </button>
+            <button onclick="submitTrainingGuess(true)" class="py-3 px-4 rounded-xl border-2 border-slate-200 hover:border-indigo-600 hover:bg-indigo-50 font-bold text-slate-700 hover:text-indigo-600 transition-all flex flex-col items-center gap-1">
+              <i class="fa-solid fa-robot text-lg"></i>
+              <span>AI Generated</span>
+            </button>
+          </div>
+
+          <div id="training-feedback" class="hidden rounded-xl p-4 transition-all">
+            <div id="feedback-header" class="font-bold flex items-center gap-2 mb-2"></div>
+            <p id="feedback-text" class="text-sm leading-relaxed"></p>
+            <button onclick="nextTrainingCase()" class="mt-4 w-full bg-slate-900 text-white font-medium py-2 rounded-lg text-sm hover:bg-slate-800 transition-colors">
+              Next Training Case <i class="fa-solid fa-chevron-right ml-1"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: SWIPE QUIZ -->
+    <section id="page-quiz" class="page-section hidden max-w-md mx-auto space-y-6">
+      <div class="text-center">
+        <h2 class="text-3xl font-bold text-slate-900">20-Card Swipe Challenge</h2>
+        <p class="text-slate-600 text-sm mt-1">Swipe Right/Click "Real" or Swipe Left/Click "AI". Feedback provided at the end.</p>
+      </div>
+
+      <div class="space-y-1">
+        <div class="flex justify-between text-xs text-slate-500 font-semibold">
+          <span>PROGRESS</span>
+          <span id="quiz-progress-text">1 / 20</span>
+        </div>
+        <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+          <div id="quiz-progress-bar" class="bg-indigo-600 h-full w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+
+      <!-- CLEAN WHITE CARD CONTAINER PERFECT FOR 1024x1024 SQUARE IMAGES -->
+      <div id="quiz-card-container" class="relative w-full aspect-square max-w-md mx-auto">
+        <div id="quiz-card" class="swipe-card absolute inset-0 bg-white rounded-2xl border border-slate-200/90 shadow-xl overflow-hidden flex flex-col cursor-grab active:cursor-grabbing">
+          <div class="relative flex-1 w-full h-full bg-slate-50 overflow-hidden flex items-center justify-center p-1.5">
+            <img id="quiz-card-img" src="" alt="Quiz Image" class="w-full h-full object-cover pointer-events-none rounded-xl">
+            
+            <div id="overlay-real" class="swipe-overlay absolute top-6 left-6 border-4 border-emerald-500 text-emerald-500 rounded-lg px-4 py-1 text-2xl font-black rotate-[-12deg] opacity-0 pointer-events-none bg-white/90 z-20 shadow-md">
+              REAL
+            </div>
+            <div id="overlay-ai" class="swipe-overlay absolute top-6 right-6 border-4 border-rose-500 text-rose-500 rounded-lg px-4 py-1 text-2xl font-black rotate-[12deg] opacity-0 pointer-events-none bg-white/90 z-20 shadow-md">
+              AI
+            </div>
+          </div>
+          <div class="py-2 px-3 bg-white text-center border-t border-slate-100 flex-shrink-0">
+            <p class="text-xs font-semibold text-slate-500">Card #<span id="card-num">1</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div id="quiz-controls" class="flex justify-center gap-6 pt-2">
+        <button onclick="handleSwipeChoice(true)" class="w-16 h-16 rounded-full bg-white border-2 border-rose-200 hover:border-rose-500 text-rose-500 hover:bg-rose-50 flex items-center justify-center text-2xl shadow-md transition-all transform active:scale-95">
+          <i class="fa-solid fa-robot"></i>
+        </button>
+        <button onclick="handleSwipeChoice(false)" class="w-16 h-16 rounded-full bg-white border-2 border-emerald-200 hover:border-emerald-500 text-emerald-500 hover:bg-emerald-50 flex items-center justify-center text-2xl shadow-md transition-all transform active:scale-95">
+          <i class="fa-solid fa-user-check"></i>
+        </button>
+      </div>
+
+      <!-- RESULTS CONTAINER WITH INTEGRATED BUY ME A COFFEE CARD -->
+      <div id="quiz-results" class="hidden bg-white rounded-2xl border border-slate-200 p-6 shadow-md text-center space-y-6">
+        <div class="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-full flex items-center justify-center text-2xl mx-auto">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <div>
+          <h3 class="text-2xl font-bold text-slate-900">Block Completed!</h3>
+          <p class="text-slate-600 text-sm mt-1">Here is your performance score for this 20-image evaluation block.</p>
+        </div>
+
+        <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-around">
+          <div>
+            <div class="text-3xl font-extrabold text-indigo-600" id="final-score">0 / 20</div>
+            <div class="text-xs text-slate-500 font-medium">SCORE</div>
+          </div>
+          <div>
+            <div class="text-3xl font-extrabold text-slate-800" id="final-percentage">0%</div>
+            <div class="text-xs text-slate-500 font-medium">ACCURACY</div>
+          </div>
+        </div>
+
+        <!-- Support Box -->
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/80 rounded-xl p-5 text-center space-y-3">
+          <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-100 text-amber-800 text-lg shadow-sm">
+            ☕
+          </div>
+          <div class="space-y-1">
+            <h4 class="text-sm font-bold text-amber-950">Enjoying this free tool?</h4>
+            <p class="text-xs text-amber-800 leading-relaxed max-w-sm mx-auto">
+              VeriFace AI is 100% free and ad-free. Consider buying us a coffee to support server costs and new image datasets!
+            </p>
+          </div>
+          <a href="https://www.buymeacoffee.com" target="_blank" rel="noopener noreferrer" 
+             class="inline-flex items-center gap-2 bg-amber-400 hover:bg-amber-500 text-slate-900 font-bold px-5 py-2 rounded-lg text-xs shadow transition-all transform hover:-translate-y-0.5">
+            <i class="fa-solid fa-heart text-rose-600"></i> Support VeriFace ($5)
+          </a>
+        </div>
+
+        <button onclick="resetQuiz()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 rounded-xl transition-all shadow-md">
+          Retry Quiz Challenge
+        </button>
+      </div>
+    </section>
+
+    <!-- PAGE 4: ABOUT SUB-PAGE -->
+    <section id="page-about" class="page-section hidden max-w-3xl mx-auto space-y-8">
+      <div>
+        <h2 class="text-3xl font-bold text-slate-900">About VeriFace AI</h2>
+        <p class="text-slate-600 mt-1">Educational framework dedicated to digital literacy and AI perceptual awareness.</p>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 p-8 space-y-6 shadow-sm">
+        <div class="space-y-3">
+          <h3 class="text-xl font-bold text-slate-900">Project Mission</h3>
+          <p class="text-slate-600 leading-relaxed text-sm">
+            As Generative Adversarial Networks (GANs) and Diffusion models advance, distinguishing synthetic media from authentic photography becomes critical for digital security and media literacy.
+          </p>
+        </div>
+        <hr class="border-slate-100">
+        <div class="space-y-3">
+          <h3 class="text-xl font-bold text-slate-900">Key Detection Markers</h3>
+          <ul class="list-disc list-inside text-sm text-slate-600 space-y-2">
+            <li><strong class="text-slate-800">Eye Reflections:</strong> AI often struggles with catchlight symmetry.</li>
+            <li><strong class="text-slate-800">Background Artifacts:</strong> Look for unexpected warping around hair and shoulders.</li>
+            <li><strong class="text-slate-800">Jewelry & Accessories:</strong> Mismatched earrings or glasses warping into skin.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- GLOBAL FOOTER -->
+  <footer class="bg-white border-t border-slate-200 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center space-x-2">
+        <div class="w-6 h-6 rounded bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">V</div>
+        <span class="font-bold text-sm text-slate-800">VeriFace AI Platform</span>
+      </div>
+      <p class="text-xs text-slate-500">© 2026 VeriFace AI Academy.</p>
+      <div class="flex space-x-4 text-slate-400">
+        <a href="#" class="hover:text-indigo-600 transition-colors"><i class="fa-brands fa-twitter text-lg"></i></a>
+        <a href="#" class="hover:text-indigo-600 transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
+        <a href="#" class="hover:text-indigo-600 transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT IMPORTS -->
+  <script src="js/dataset.js"></script>
+  <script src="js/training.js"></script>
+  <script src="js/quiz.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
